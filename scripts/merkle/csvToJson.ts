@@ -4,12 +4,13 @@ import readline from "readline";
 import csv from "csvtojson";
 import { parseBalanceMap } from "./utils/parse-balance-map";
 
-const csvFilePath = "./airdropRecords.csv";
+const csvFilePath = "./kacBonusRecords.csv";
+const writeToPath = "../../output/merkle_kacBonus.json"
 // console.log(path.resolve(__dirname, csvFilePath));
 const rl: any = readline.createInterface({
   input: fs.createReadStream(path.resolve(__dirname, csvFilePath)),
   output: fs.createWriteStream(
-    path.resolve(__dirname, "../../output/merkle.json")
+    path.resolve(__dirname, writeToPath)
   ),
   terminal: false,
 });
@@ -34,11 +35,12 @@ rl.on("close", function () {
           data[i].amount * 1000000000000000000
         ).toString(16);
       }
+      // console.log(JSON.stringify(_data));
       const { claims, merkleRoot, tokenTotal } = parseBalanceMap(_data);
       // console.log(claims, merkleRoot, tokenTotal);
 
       fs.writeFileSync(
-        path.resolve(__dirname, "../../output/merkle.json"),
+        path.resolve(__dirname, writeToPath),
         JSON.stringify({
           merkleRoot: merkleRoot,
           tokenTotal: tokenTotal,
